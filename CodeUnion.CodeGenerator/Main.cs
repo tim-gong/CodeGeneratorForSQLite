@@ -36,32 +36,42 @@ namespace CodeUnion.CodeGenerator
 
         private void Generate_Click(object sender, EventArgs e)
         {
-            if (Tables.SelectedRows.Count>0)
+            try
             {
-                Generate.Enabled = false;
-                IDictionary<string, object> parameters = new Dictionary<string, object>();
-                parameters.Add("database", ConfigurationManager.ConnectionStrings["hgyclicklog"].ProviderName);
-                parameters.Add("namespace", this.Namespace.Text);
-                parameters.Add("nullableType", this.NullableType.Checked ? "?" : "");
-                IList<Table> tables = new List<Table>();
-                foreach (DataGridViewRow row in this.Tables.SelectedRows)
+                if (Tables.SelectedRows.Count > 0)
                 {
-                    tables.Add((Table)row.DataBoundItem);
-                }
-                IGeneratorService generatorService = new GeneratorService();
-                generatorService.ConnectionString = ConfigurationManager.ConnectionStrings["hgyclicklog"].ConnectionString;
-                generatorService.TemplatePath = Path.Combine(Application.StartupPath, string.Format(@"Templates\{0}", this.Version.SelectedItem));
-                generatorService.OutputPath = Path.Combine(Application.StartupPath, "Outputs");
-                //生成之前清空outputs文件夹
-                DeleteFolder(generatorService.OutputPath);
+                    Generate.Enabled = false;
+                    IDictionary<string, object> parameters = new Dictionary<string, object>();
+                    parameters.Add("database", ConfigurationManager.ConnectionStrings["hgyclicklog"].ProviderName);
+                    parameters.Add("namespace", this.Namespace.Text);
+                    parameters.Add("nullableType", this.NullableType.Checked ? "?" : "");
+                    IList<Table> tables = new List<Table>();
+                    foreach (DataGridViewRow row in this.Tables.SelectedRows)
+                    {
+                        tables.Add((Table) row.DataBoundItem);
+                    }
+                    IGeneratorService generatorService = new GeneratorService();
+                    generatorService.ConnectionString =
+                        ConfigurationManager.ConnectionStrings["hgyclicklog"].ConnectionString;
+                    generatorService.TemplatePath = Path.Combine(Application.StartupPath,
+                                                                 string.Format(@"Templates\{0}",
+                                                                               this.Version.SelectedItem));
+                    generatorService.OutputPath = Path.Combine(Application.StartupPath, "Outputs");
+                    //生成之前清空outputs文件夹
+                    DeleteFolder(generatorService.OutputPath);
 
-                generatorService.Generate(tables, parameters);
-                MessageBox.Show("生成成功");
-                Generate.Enabled = true;
+                    generatorService.Generate(tables, parameters);
+                    MessageBox.Show("生成成功");
+                    Generate.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("请选择数据表");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("请选择数据表");
+                
             }
         }
 
