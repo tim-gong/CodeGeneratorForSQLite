@@ -42,7 +42,7 @@ namespace CodeUnion.CodeGenerator
                 {
                     Generate.Enabled = false;
                     IDictionary<string, object> parameters = new Dictionary<string, object>();
-                    parameters.Add("database", ConfigurationManager.ConnectionStrings["hgyclicklog"].ProviderName);
+                    parameters.Add("database", ConfigurationManager.ConnectionStrings["SQLiteConnectionString"].ProviderName);
                     parameters.Add("namespace", this.Namespace.Text);
                     parameters.Add("nullableType", this.NullableType.Checked ? "?" : "");
                     IList<Table> tables = new List<Table>();
@@ -52,7 +52,7 @@ namespace CodeUnion.CodeGenerator
                     }
                     IGeneratorService generatorService = new GeneratorService();
                     generatorService.ConnectionString =
-                        ConfigurationManager.ConnectionStrings["hgyclicklog"].ConnectionString;
+                        ConfigurationManager.ConnectionStrings["SQLiteConnectionString"].ConnectionString;
                     generatorService.TemplatePath = Path.Combine(Application.StartupPath,
                                                                  string.Format(@"Templates\{0}",
                                                                                this.Version.SelectedItem));
@@ -111,7 +111,7 @@ namespace CodeUnion.CodeGenerator
         private void Refresh(string schemaType)
         {
             IGeneratorService generatorService = new GeneratorService();
-            generatorService.ConnectionString = ConfigurationManager.ConnectionStrings["hgyclicklog"].ConnectionString;
+            generatorService.ConnectionString = ConfigurationManager.ConnectionStrings["SQLiteConnectionString"].ConnectionString;
             this.Tables.DataSource = generatorService.GetTables(schemaType);
         }
 

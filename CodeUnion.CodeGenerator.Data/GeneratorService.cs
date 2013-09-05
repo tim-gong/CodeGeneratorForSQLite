@@ -108,7 +108,7 @@ namespace CodeUnion.CodeGenerator.Data
         {
             IList<Column> result = new List<Column>();
             IList<string> primaryKeys = this.GetPrimaryKeys(tableName);
-            SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["hgyclicklog"].ConnectionString);
+            SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnectionString"].ConnectionString);
             conn.Open();
             using (SQLiteCommand cmd = new SQLiteCommand(String.Format(CultureInfo.InvariantCulture, "SELECT * FROM [{0}].[{1}]", "main", tableName), conn))
             using (SQLiteDataReader rd = (SQLiteDataReader)cmd.ExecuteReader(CommandBehavior.SchemaOnly))
